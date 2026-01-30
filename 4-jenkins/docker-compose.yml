@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+    jenkins:
+        image: custom-jenkins:1.0.0
+        container_name: custom-jenkins
+        build: .
+        restart: always
+        privileged: true
+        user: root
+        ports:
+            - 8080:8080
+        volumes:
+            - ./jenkins_configuration:/var/jenkins_home
+            - /var/run/docker.sock:/var/run/docker.sock
