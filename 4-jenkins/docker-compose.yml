@@ -7,6 +7,8 @@ services:
         restart: always
         privileged: true
         user: root
+        environment:
+            DOCKER_API_VERSION: "1.43"
         ports:
             - 8080:8080
         volumes:
