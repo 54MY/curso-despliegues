@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # Base de datos MySQL
+  db:
+    image: mysql:8.0
+    container_name: mysql-personas
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: personas_db
+      MYSQL_USER: usuario
+      MYSQL_PASSWORD: password123
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql-data:/var/lib/mysql
+    networks:
+      - personas-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot123"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend Node.js
+  backend:
+    build: ./backend
+    container_name: nodejs-backend
+    image: backend:1.0.0
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      DB_USER: usuario
+      DB_PASSWORD: password123
+      DB_NAME: personas_db
+      DB_PORT: 3306
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - personas-network
+
+  # Frontend
+  frontend:
+    build: ./frontend
+    container_name: frontend-personas
+    image: frontend:1.0.0
+    restart: always
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - personas-network
+
+networks:
+  personas-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
