@@ -309,7 +309,7 @@
     </div>
 
     <script>
-        const API_URL = 'http://localhost:3000/api/personas';
+        const API_URL = 'http://localhost:3001/api/personas';
 
         async function cargarPersonas() {
             const contenido = document.getElementById('contenido');
@@ -336,7 +336,7 @@
                     <div class="error">
                         <strong>connection failed</strong>
                         ${error.message}<br><br>
-                        <small>ensure backend is running on http://localhost:3000</small>
+                        <small>ensure backend is running on http://localhost:3001</small>
                     </div>
                 `;
             }
