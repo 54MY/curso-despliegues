@@ -11,8 +11,10 @@ services:
       MYSQL_DATABASE: personas_db
       MYSQL_USER: usuario
       MYSQL_PASSWORD: password123
-    ports:
-      - "3306:3306"
+    expose:
+      - "3306"
+#    ports:
+#      - "3306:3306"
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - mysql-data:/var/lib/mysql
@@ -51,7 +53,7 @@ services:
     image: frontend:1.0.0
     restart: always
     ports:
-      - "8080:80"
+      - "8081:80"
     depends_on:
       - backend
     networks:
