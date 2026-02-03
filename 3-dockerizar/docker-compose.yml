@@ -13,8 +13,6 @@ services:
       MYSQL_PASSWORD: password123
     expose:
       - "3306"
-    ports:
-      - "3306:3306"
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
       - mysql-data:/var/lib/mysql
@@ -32,8 +30,8 @@ services:
     container_name: nodejs-backend
     image: backend:1.0.0
     restart: always
-    ports:
-      - "3001:3000"
+    expose:
+      - "3000"
     environment:
       DB_HOST: db
       DB_USER: usuario
